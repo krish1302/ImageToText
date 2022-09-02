@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ImgToTxt</title>
+    <style>
+        body{
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            top: 0;
+        }
+        .nav{
+            width: 100%;
+            height: 10vh;
+            background-color: brown;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .content{
+            width: 100%;
+            height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+        }
+        .content-item{
+            width: 40%;
+            height: 100%;
+        }
+        .contain-login{
+            width: 100%;
+            height: 90%;
+            margin: 5%;
+            position: relative;
+            background: #ffffff;
+            box-shadow:  6px 6px 12px #666666,
+                        -6px -6px 12px #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+        }
+       
+        .btn{
+            width: 200px;
+            height: 40px;
+            background: #ffffff;
+            box-shadow:  6px 6px 12px #666666,
+                        -6px -6px 12px #ffffff;
+            text-align: center;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: auto;
+        }
+
+        input[type=text], input[type=password] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        button {
+            background: #04AA6D;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+        .container {
+            padding: 16px;
+        }
+
+        span.psw {
+            float: right;
+            padding-top: 16px;
+        }
+        i{
+            cursor: pointer;
+        }
+
+    </style>
+    <script src="https://kit.fontawesome.com/28c78dc9b0.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="nav">
+        <h1>Text Recognition</h1>
+    </div>
+    <div class="content">
+        <div class="content-item"></div>
+        <div class="content-item">
+            <div class="contain-login">
+                
+                <div id="London" class="contain-login-content city">
+                    <form action="/login" method="post">
+                        <div class="container">
+                            <h1 style="text-align: center;">Login Your Account</h1>
+                          <label for="uname"><b>Username</b></label>
+                          <input type="text" placeholder="Enter Username" name="uname" required>
+                      
+                          <label for="psw"><b>Password</b></label>
+                          <input id="pass1" type="password" placeholder="Enter Password" name="psw" required>
+                          <i id="icon1" class="fas fa-eye" style="margin-left:auto;" onclick="showPassword(1)"></i>
+                          
+                          <button type="submit">Login</button>
+                          <label style="color: red;">{{login_error}}</label>
+                          <div class="btn" onclick="openCity('Paris')">Create New Account</div>
+                          
+                        </div>
+                      
+                        
+                    </form>
+                </div>
+                
+                <div id="Paris" class="contain-login-content city" style="display:none">
+                    <form name="signup" action="/signup" method="post">
+                        <h1 style="text-align: center;">SignUp Your Account</h1>
+                        <div class="container">
+                          <label for="uname"><b>Username</b></label>
+                          <input type="text" placeholder="Enter Username" name="uname" required>
+                      
+                          <label for="psw"><b>Password</b></label>
+                          <input id="pass2" type="password" onchange="SetDefault();" onpaste="this.onchange();" oninput="this.onchange();" placeholder="Enter Password" name="psw" required>
+
+                          <label for="con"><b>Confirm Password</b></label>
+                          <input id="pass3" type="password" onchange="SetDefault();" onpaste="this.onchange();" oninput="this.onchange();" placeholder="Confirm Password" name="con" required>
+                          <i id="icon2" onclick="showPassword(2)" class="fas fa-eye" style="margin-left:auto;"></i>
+                          <button id="submit" type="submit" disabled>Signup</button>
+                          <label style="color: red;">{{signup_error}}</label>
+                        </div>
+                        <div class="btn" onclick="openCity('London')">Already having account</div>
+                        
+                    </form>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <script>
+        if('{{signup_error}}'){
+            openCity('Paris')
+        }
+
+        show1 = true;
+        show2 = true;
+        function showPassword(num){
+            switch(num){
+                case 1:
+                    var password = document.getElementById('pass1');
+                    var icon = document.getElementById('icon1')
+                    if(show1){
+                        password.setAttribute("type","text");
+                        show1 = false;
+                        icon.className = 'fas fa-eye-slash';
+                    }
+                    else{
+                        password.setAttribute("type","password");
+                        show1 = true;
+                        icon.className = 'fas fa-eye';
+                    }
+                    break;
+                case 2:
+                    var password1 = document.getElementById('pass2');
+                    var password2 = document.getElementById('pass3');
+                    var icon = document.getElementById('icon2')
+                    if(show2){
+                        password1.setAttribute("type","text");
+                        password2.setAttribute("type","text");
+                        show2 = false;
+                        icon.className = 'fas fa-eye-slash';
+                    }
+                    else{
+                        password1.setAttribute("type","password");
+                        password2.setAttribute("type","password");
+                        show2 = true;
+                        icon.className = 'fas fa-eye';
+                    }
+                    break;
+            }
+        }
+
+        
+
+        function openCity(cityName) {
+          var i;
+          var x = document.getElementsByClassName("city");
+          for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";  
+          }
+          document.getElementById(cityName).style.display = "flex";  
+        }
+
+        function SetDefault(){
+            var pass = document.forms['signup']['psw'].value;
+            var confirm = document.forms['signup']['con'].value;
+            console.log(pass,confirm)
+
+            if(pass != ""){
+                if(pass == confirm){
+                    document.getElementById('submit').removeAttribute("disabled");
+                }
+                else{
+                    document.getElementById('submit').setAttribute("disabled",true);
+                }
+            }
+            
+            
+        }
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ImageToText</title>
+    <style>
+        body{
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            top: 0;
+        }
+        .nav{
+            width: 100%;
+            height: 10vh;
+            background-color: brown;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .content{
+            width: 100%;
+            height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+        }
+        .content-item{
+            width: 100%;
+            height: 100%;
+        }
+        .contain-login{
+            width: 100%;
+            height: 90%;
+            margin: 5%;
+            position: relative;
+            background: #ffffff;
+            box-shadow:  6px 6px 12px #666666,
+                        -6px -6px 12px #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-evenly;
+        }
+        .btn{
+            width: 200px;
+            height: 40px;
+            background: #ffffff;
+            box-shadow:  6px 6px 12px #666666,
+                        -6px -6px 12px #ffffff;
+            text-align: center;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2% auto;
+        }
+        .btn-log{
+            width: 100px;
+            height: 40px;
+            background: blue;
+            border-radius: 20px;
+            color: white;
+            position: fixed;
+            right: 3%;
+            top: 2vh;
+            cursor: pointer;
+        }
+
+        /* style for radio button */
+        .wrapper .option{
+            background: #fff;
+            height: fit-content;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+            margin: 0 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            padding: 0 10px;
+            border: 2px solid lightgrey;
+            transition: all 0.3s ease;
+            }
+        .wrapper .option .dot{
+            height: 20px;
+            width: 20px;
+            background: #d9d9d9;
+            border-radius: 50%;
+            position: relative;
+        }
+        .wrapper .option .dot::before{
+            position: absolute;
+            content: "";
+            top: 4px;
+            left: 4px;
+            width: 12px;
+            height: 12px;
+            background: #0069d9;
+            border-radius: 50%;
+            opacity: 0;
+            transform: scale(1.5);
+            transition: all 0.3s ease;
+        }
+        input[type="radio"]{
+            display: none;
+        }
+        #option-1:checked:checked ~ .option-1,
+        #option-2:checked:checked ~ .option-2,
+        #option-3:checked:checked ~ .option-3{
+            border-color: #0069d9;
+            background: #0069d9;
+        }
+        #option-1:checked:checked ~ .option-1 .dot,
+        #option-2:checked:checked ~ .option-2 .dot,
+        #option-3:checked:checked ~ .option-3 .dot{
+            background: #fff;
+        }
+        #option-1:checked:checked ~ .option-1 .dot::before,
+        #option-2:checked:checked ~ .option-2 .dot::before,
+        #option-3:checked:checked ~ .option-3 .dot::before{
+            opacity: 1;
+            transform: scale(1);
+        }
+        .wrapper .option span{
+            font-size: 20px;
+            color: #808080;
+        }
+        #option-1:checked:checked ~ .option-1 span,
+        #option-2:checked:checked ~ .option-2 span,
+        #option-3:checked:checked ~ .option-3 span{
+            color: #fff;
+        }
+    </style>
+    
+</head>
+<body>
+
+    
+
+    <div class="nav">
+        <h1>Image or Video to Text Recognition</h1>
+        <form action="/">
+            <button class="btn-log">Logout</button>
+        </form>
+    </div>
+    <div class="content">
+        <div class="content-item">
+            <div class="contain-login">
+                <div class="wrapper" style="display: flex;">
+                    <input type="radio" name="select" id="option-1" onclick="openCity('image')" checked>
+                    <input type="radio" name="select" id="option-2" onclick="openCity('video')" >
+                    <input type="radio" name="select" id="option-3" onclick="openCity('live')" >
+                    <label for="option-1" class="option option-1">
+                        <div class="dot"></div>
+                        <span>Image</span>
+                    </label>
+                    <label for="option-2" class="option option-2">
+                        <div class="dot"></div>
+                        <span>Video</span>
+                    </label>
+                    <label for="option-3" class="option option-3">
+                        <div class="dot"></div>
+                        <span>Live</span>
+                    </label>
+                </div>
+                <div id="image" class="source">
+                    <img src="{{ url_for('video_detected', filename=data) }}" alt="" width="300px" height="300px">
+                    <form  method="post" action="/image" enctype="multipart/form-data">
+                        <input type="file" name="file" autocomplete="off" required>
+                        <button class="btn" type="submit">Proceed Image</button>
+                    </form>
+                </div>
+                <div id="video" class="source" style="display:none">
+                   <img src="{{ url_for('video_detected', filename=data) }}" alt="" width="300px" height="300px">
+                    <form  method="post" action="/video" enctype="multipart/form-data" >
+                        <input type="file" name="file" autocomplete="off" required>
+                        <button class="btn" type="submit">Proceed Video</button>
+                    </form>
+                </div>  
+                <div id="live" class="source" style="display: none;">  
+                </div>              
+            </div>
+        </div>
+       
+    </div>
+    
+
+    <script>
+        if('{{vidoe}}'){
+            openCity('video');
+        } 
+
+        function openCity(cityName) {
+         console.log('i am clicked');
+          var i;
+          var x = document.getElementsByClassName("source");
+          for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";  
+          }
+          document.getElementById(cityName).style.display = "block";  
+
+          if (cityName == 'live'){
+            console.log('i am here');
+            live.innerHTML = `<img src="{{ url_for('video_detected',filename ='live') }}" alt="" width="500px" height="300px"/>`
+          }
+          else{
+            live.innerHTML = ``;
+          }
+
+        }
+    </script>
+</body>
+</html>

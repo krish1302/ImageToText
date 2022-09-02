@@ -1,0 +1,11 @@
+1. recogniztion on web cam
+
+## python3 text_detection.py --model frozen_east_text_detection.pb  --ocr crnn.onnx  
+
+2. recogniztion on recorded vido
+
+##  python3 text_detection.py --model frozen_east_text_detection.pb  --ocr crnn.onnx  --input test.avi
+
+3. recognizition on image
+
+## python3 text_detection.py --model frozen_east_text_detection.pb  --ocr crnn.onnx  --input image1.jpg
